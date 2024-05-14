@@ -18,7 +18,7 @@ httr::content(httr::GET('https://apex.psmfc.org/akfin/data_marts/akmp/bs_crab_av
                                 as.character(as.Date(paste("2000",month,day,sep="-"),format="%Y-%m-%d"))),format("%Y-%m-%d")),
          year2=ifelse(month==12,year+1,year)) %>% # To have our years go from Dec-Nov, force December to be part of the subsequent year.
   arrange(read_date) %>%
-  saveRDS("/srv/shiny-server/bs-crab-avg-sst/data/crabsst.RDS")
+  saveRDS("data/crabsst.RDS")
   #saveRDS("data/crabsst.RDS")
 
 
