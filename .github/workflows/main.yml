@@ -1,0 +1,26 @@
+name: time series update schedule script
+
+on:
+  schedule:
+  - cron: "30 22 * * *"
+
+
+
+jobs:
+  build:
+    runs-on: ubunto-latest
+
+    steps:
+      - name: Checkout repository content
+        uses: actions/checkout@v2 
+      - name: Run R script
+        run: Rscript crabsst_update.R
+      - name: Commit files
+        run: |
+          git config --local user.name MattCallahan-NOAA
+          git config --local user.email matt.callahan@noaa.gov
+          git add --all
+          git commit -am "GH ACTION Headlines $(date)"
+        env:
+          REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+          username: github-actions
