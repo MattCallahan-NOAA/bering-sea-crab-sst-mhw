@@ -2,29 +2,26 @@ name: time series update schedule script
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: main
   schedule:
-  - cron: "08 19 * * *"
-
-
+  - cron: "19 19 * * *"
 
 jobs:
-  build:
+  import-data:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository content
-        uses: actions/checkout@v2 
-        
-      - name: Setup R
-        run: apt install r-base
-        
-      - name: Install R dependencies
-        run: Rscript -e 'install.packages(c("tidyverse", "httr", "lubridate")'
+      - name: Set up R
+        run: r-lib/actions/setup-r@v2
+      - name: Install packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::tidyverse
+            any::lubridate
+            any::httr
+            
+      - name: Check out repository
+        uses: actions/checkout@v3
         
       - name: Run R script
         run: Rscript crabsst_update.R
@@ -35,6 +32,5 @@ jobs:
           git config --local user.email matt.callahan@noaa.gov
           git add --all
           git commit -am "GH ACTION Headlines $(date)"
-        env:
-          REPO_KEY: ${{secrets.GITHUB_TOKEN}}
-          username: github-actions
+          git push origin || echo "No changes to commit"
+
