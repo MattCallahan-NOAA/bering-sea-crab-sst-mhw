@@ -4,7 +4,7 @@ on:
   push:
     branches: main
   schedule:
-  - cron: "17 20 * * *"
+  - cron: "30 20 * * *"
 
 jobs:
   import-data:
@@ -22,16 +22,18 @@ jobs:
             any::httr
             
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       - name: Run R script
         run: Rscript crabsst_update.R
-        
-      - name: Commit files
+
+      - name: Commit results
         run: |
-          git config --local user.name MattCallahan-NOAA
-          git config --local user.email matt.callahan@noaa.gov
-          git add --all
-          git commit -am "GH ACTION Headlines $(date)"
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add data/crabsst.RDS
+          git commit -m 'Data updated' || echo "No changes to commit"
           git push origin || echo "No changes to commit"
+
+
 
