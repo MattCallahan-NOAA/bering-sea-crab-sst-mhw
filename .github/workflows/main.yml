@@ -1,8 +1,14 @@
 name: time series update schedule script
 
 on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   schedule:
-  - cron: "50 17 * * *"
+  - cron: "02 19 * * *"
 
 
 
@@ -13,8 +19,16 @@ jobs:
     steps:
       - name: Checkout repository content
         uses: actions/checkout@v2 
+        
+      - name: Setup R
+        run: r-lib/actions/setup-r@v2
+        
+      - name: Install R dependencies
+        run: Rscript -e 'install.packages(c("tidyverse", "httr", "lubridate")'
+        
       - name: Run R script
         run: Rscript crabsst_update.R
+        
       - name: Commit files
         run: |
           git config --local user.name MattCallahan-NOAA
