@@ -2,13 +2,13 @@ name: time series update schedule script
 
 on:
   schedule:
-  - cron: "30 22 * * *"
+  - cron: "50 17 * * *"
 
 
 
 jobs:
   build:
-    runs-on: ubunto-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository content
