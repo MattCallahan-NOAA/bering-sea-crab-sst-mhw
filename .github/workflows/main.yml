@@ -4,7 +4,7 @@ on:
   push:
     branches: main
   schedule:
-  - cron: "41 19 * * *"
+  - cron: "17 20 * * *"
 
 jobs:
   import-data:
@@ -16,7 +16,8 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages: |
-            any::tidyverse
+            any::dplyr
+            any::magrittr
             any::lubridate
             any::httr
             
